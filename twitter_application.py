@@ -18,6 +18,8 @@ ACCESS_TOKEN        = '1368620185716809728-gCid7YMfvXlXYfH0niNpqmYPG22ats'
 ACCESS_TOKEN_SECRET = 'xvQNBBnUa7VZlxBgQ44cbjt3eay8iIwwZ2UjihF92Bu62'
 
 if __name__ == '__main__':
+    notification = TimedNotification(Print(EMAIL))
+
     file_reader = UserFileReader(FILE)
     file_reader.read()
 
@@ -30,12 +32,12 @@ if __name__ == '__main__':
         .accessToken(ACCESS_TOKEN)                                             \
         .accessTokenSecret(ACCESS_TOKEN_SECRET)                                \
         .waitOnRateLimit(True)                                                 \
-        .setAccounts(file_reader.getUsers())                                       \
+        .setAccounts(file_reader.getUsers())                                   \
         .build()
 
     bot.setup()
     bot.run()
-    print(followerMap)
+
     followerMap = bot.getFollowerMap()
     database.write(followerMap)
 
@@ -43,10 +45,9 @@ if __name__ == '__main__':
 
     message = DefaultMessage(                                                  \
         change_in_followers.getFollowedAccounts(),                             \
-        change_in_followers.getFollowedAccounts()                              \
+        change_in_followers.getUnfollowedAccounts()                            \
     )
-
-    notification = TimedNotification(Print(EMAIL))
+    message.format()
     notification.notify(message.getMessage())
 
-    # database.write()
+    database.write(followerMap)
