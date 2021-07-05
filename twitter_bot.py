@@ -1,8 +1,4 @@
 import tweepy
-import requests
-import time
-import os
-import pickle
 
 COUNT = 200
 
@@ -42,10 +38,10 @@ class TwitterBotBuilder():
 class TwitterBot():
 
     def __init__(self, builder):
-        self.consumer_key = builder.consumer_key
-        self.consumer_key_secret = builder.consumer_key_secret
-        self.access_token = builder.access_token
-        self.access_token_secret = builder.access_token_secret
+        self.__consumer_key = builder.consumer_key
+        self.__consumer_key_secret = builder.consumer_key_secret
+        self.__access_token = builder.access_token
+        self.__access_token_secret = builder.access_token_secret
         self.wait_on_rate_limit = builder.wait_on_rate_limit
         self.accounts = builder.accounts
 
@@ -57,17 +53,12 @@ class TwitterBot():
     def setup(self):
         self.createApi()
 
-        #self.read_saved_users()
-        #self.read_users()
-        #self.recently_followed = {}
-        #self.recently_unfollowed = {}
-
     def createApi(self):
         self.api = tweepy.API(self.authentication(), wait_on_rate_limit=self.wait_on_rate_limit)
 
     def authentication(self):
-        auth = tweepy.OAuthHandler(self.consumer_key, self.consumer_key_secret)
-        auth.set_access_token(self.access_token, self.access_token_secret)
+        auth = tweepy.OAuthHandler(self.__consumer_key, self.__consumer_key_secret)
+        auth.set_access_token(self.__access_token, self.__access_token_secret)
         return auth
 
     def run(self):
