@@ -29,6 +29,7 @@ class TimedNotification(Notification):
         message = start_message + end_message + "\n" + message
         self.notification.notify(message)
 
+
 class Print(Notification):
 
     def __init__(self, out):
