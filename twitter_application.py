@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from twitter_bot import TwitterBot, NewFollowerTwitterBot, TwitterBotBuilder, NewFollowerTwitterBotBuilder
 from file_reader import ConfigFileReader, UserFileReader
 from change_in_followers import ChangeInFollowers
-from message import DefaultMessage
+from message import NewFollowerDefaultMessage
 from notification import Notification
 from database import Database
 
@@ -112,7 +112,7 @@ class NewFollowerApplication(Application):
 
         change_in_followers = ChangeInFollowers(self.database, followerMap)
 
-        message = DefaultMessage(                                              \
+        message = NewFollowerDefaultMessage(                                   \
             change_in_followers.getFollowedAccounts(),                         \
             change_in_followers.getUnfollowedAccounts()                        \
         )
