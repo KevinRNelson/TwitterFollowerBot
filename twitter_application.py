@@ -11,6 +11,10 @@ class ApplicationBuilder(ABC):
         pass
 
     @abstractmethod
+    def config_file(self):
+        pass
+
+    @abstractmethod
     def twitterBot(self, bot):
         pass
 
@@ -33,10 +37,15 @@ class ApplicationBuilder(ABC):
 class NewFollowerApplicationBuilder(ApplicationBuilder):
 
     def __init__(self):
-        self.__bot = None
-        self.__notification = None
-        self.__database = None
-        self.__file_reader = None
+        self.config_file = None
+        self.bot = None
+        self.notification = None
+        self.database = None
+        self.file_reader = None
+
+    def config_file(self):
+        self.config_file = config_file
+        return self
 
     def twitterBot(self, bot):
         self.bot = bot
@@ -61,6 +70,10 @@ class NewFollowerApplicationBuilder(ApplicationBuilder):
 class Application(ABC):
 
     @abstractmethod
+    def __createBot(self, config_file: str) -> TwitterBot:
+        pass
+
+    @abstractmethod
     def setUp(self):
         pass
 
@@ -71,10 +84,23 @@ class Application(ABC):
 class NewFollowerApplication(Application):
 
     def __init__(self, builder: ApplicationBuilder):
-        self.bot = builder.bot
+        self.bot = self.__createBot(builder.config_file)
         self.notification = builder.notification
         self.database = builder.database
         self.file_reader = builder.file_reader
+
+    def __createBot(self, config_file: str) -> NewFollowerTwitterBot:
+        config_file_reader = ConfigFileReader(config_file)
+        config_file_reader.read()
+
+        authorization = config_file_reader.getAuthorization()
+        return NewFollowerTwitterBotBuilder()                                  \
+            .consumerKey(authorization['CONSUMER_KEY'])                        \
+            .consumerKeySecret(authorization['CONSUMER_KEY_SECRET'])           \
+            .accessToken(authorization['ACCESS_TOKEN'])                        \
+            .accessTokenSecret(authorization['ACCESS_TOKEN_SECRET'])           \
+            .waitOnRateLimit(authorization['WAIT_ON_RATE_LIMIT'])              \
+            .build()
 
     def setUp(self):
         self.database.read()
@@ -92,9 +118,9 @@ class NewFollowerApplication(Application):
 
         change_in_followers = ChangeInFollowers(self.database, followerMap)
 
-        message = DefaultMessage(                                                  \
-            change_in_followers.getFollowedAccounts(),                             \
-            change_in_followers.getUnfollowedAccounts()                            \
+        message = DefaultMessage(                                              \
+            change_in_followers.getFollowedAccounts(),                         \
+            change_in_followers.getUnfollowedAccounts()                        \
         )
         self.notification.notify(message.getMessage())
 
