@@ -37,9 +37,9 @@ class NewFollowerApplicationBuilder(ApplicationBuilder):
 
     def __init__(self):
         self.config_file = None
+        self.user_file = None
         self.notification = None
         self.database = None
-        self.file_reader = None
 
     def configFile(self, config_file: str):
         self.config_file = config_file
@@ -79,7 +79,7 @@ class NewFollowerApplication(Application):
 
     def __init__(self, builder: ApplicationBuilder):
         self.bot = self.createBot(builder.config_file)
-        self.file_reader = UserFileReader(builder.file_reader)
+        self.file_reader = UserFileReader(builder.user_file)
         self.notification = builder.notification
         self.database = builder.database
 
