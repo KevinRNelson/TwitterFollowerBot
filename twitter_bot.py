@@ -70,7 +70,7 @@ class NewFollowerTwitterBot(TwitterBot):
 
     def setUp(self, accounts: list, saved_follower_map: dict):
         self.__accounts = accounts
-        self.__follower_map = saved_follwoer_map
+        self.__follower_map = saved_follower_map
 
         auth = tweepy.OAuthHandler(self.__consumer_key, self.__consumer_key_secret)
         auth.set_access_token(self.__access_token, self.__access_token_secret)
