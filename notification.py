@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from message import *
 import os
 
 class Notification(ABC):
@@ -8,7 +9,7 @@ class Notification(ABC):
         pass
 
     @abstractmethod
-    def notify(self, message: str) -> None:
+    def notify(self, followed_accounts: dict, unfollowed_accounts: dict) -> None:
         pass
 
 
@@ -25,7 +26,7 @@ class TimedNotification(Notification):
         self.end_time = datetime.now()
         end_message   = f"end time: {self.end_time}\n"
 
-        message = start_message + end_message + message
+        message = start_message + end_message + "\n" + message
         self.notification.notify(message)
 
 class Print(Notification):
