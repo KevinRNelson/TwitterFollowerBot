@@ -1,53 +1,101 @@
+from abc import ABC, abstractmethod
+
 from twitter_bot import TwitterBotBuilder
-from database import PickleDatabase
-from notification import *
-from message import DefaultMessage
 from change_in_followers import ChangeInFollowers
-from user_file_reader import UserFileReader
+from message import DefaultMessage
 
-EMAIL = 'keronels@ucsc.edu'
-# FILE = 'users_test.txt'
+class ApplicationBuilder(ABC):
 
-#EMAIL = 'luckyguy1@gmail.com'
-FILE = 'users.txt'
+    @abstractmethod
+    def __init__(self):
+        pass
 
-CONSUMER_KEY        = 'eINzArE3PNaD0N7jHg21RvXsz'
-CONSUMER_KEY_SECRET = 'cidYcrWYyz75sLkbrABsV9N2r2GhxZasNpWiDDh1jdPhulj8y6'
+    @abstractmethod
+    def twitterBot(self, bot):
+        pass
 
-ACCESS_TOKEN        = '1368620185716809728-gCid7YMfvXlXYfH0niNpqmYPG22ats'
-ACCESS_TOKEN_SECRET = 'xvQNBBnUa7VZlxBgQ44cbjt3eay8iIwwZ2UjihF92Bu62'
+    @abstractmethod
+    def notificationObject(self, notification):
+        pass
 
-if __name__ == '__main__':
-    notification = TimedNotification(Print(EMAIL))
+    @abstractmethod
+    def databaseObject(self, database):
+        pass
 
-    file_reader = UserFileReader(FILE)
-    file_reader.read()
+    @abstractmethod
+    def fileReaderObject(self, file_reader):
+        pass
 
-    database = PickleDatabase()
-    database.read()
+    @abstractmethod
+    def build(self):
+        pass
 
-    bot = TwitterBotBuilder()                                                  \
-        .consumerKey(CONSUMER_KEY)                                             \
-        .consumerKeySecret(CONSUMER_KEY_SECRET)                                \
-        .accessToken(ACCESS_TOKEN)                                             \
-        .accessTokenSecret(ACCESS_TOKEN_SECRET)                                \
-        .waitOnRateLimit(True)                                                 \
-        .setAccounts(file_reader.getUsers())                                   \
-        .build()
+class NewFollowerApplicationBuilder(ApplicationBuilder):
 
-    bot.setup()
-    bot.run()
+    def __init__(self):
+        self.__bot = None
+        self.__notification = None
+        self.__database = None
+        self.__file_reader = None
 
-    followerMap = bot.getFollowerMap()
-    database.write(followerMap)
+    def twitterBot(self, bot):
+        self.bot = bot
+        return self
 
-    change_in_followers = ChangeInFollowers(database, followerMap)
+    def notificationObject(self, notification):
+        self.notification = notification
+        return self
 
-    message = DefaultMessage(                                                  \
-        change_in_followers.getFollowedAccounts(),                             \
-        change_in_followers.getUnfollowedAccounts()                            \
-    )
-    message.format()
-    notification.notify(message.getMessage())
+    def databaseObject(self, database):
+        self.database = database
+        return self
 
-    database.write(followerMap)
+    def fileReaderObject(self, file_reader):
+        self.file_reader = file_reader
+        return self
+
+    def build(self):
+        return NewFollowerApplication(self)
+
+
+class Application(ABC):
+
+    @abstractmethod
+    def setUp(self):
+        pass
+
+    @abstractmethod
+    def run(self):
+        pass
+
+class NewFollowerApplication(Application):
+
+    def __init__(self, builder: ApplicationBuilder):
+        self.bot = builder.bot
+        self.notification = builder.notification
+        self.database = builder.database
+        self.file_reader = builder.file_reader
+
+    def setUp(self):
+        self.database.read()
+
+        self.file_reader.read()
+        accounts = self.file_reader.getUsers()
+        self.bot.setUp(accounts)
+
+
+    def run(self):
+        self.bot.run()
+
+        followerMap = self.bot.getFollowerMap()
+        self.database.write(followerMap)
+
+        change_in_followers = ChangeInFollowers(self.database, followerMap)
+
+        message = DefaultMessage(                                                  \
+            change_in_followers.getFollowedAccounts(),                             \
+            change_in_followers.getUnfollowedAccounts()                            \
+        )
+        self.notification.notify(message.getMessage())
+
+        self.database.write(followerMap)
