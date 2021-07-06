@@ -64,7 +64,7 @@ class NewFollowerApplicationBuilder(ApplicationBuilder):
 class Application(ABC):
 
     @abstractmethod
-    def __createBot(self, config_file: str) -> TwitterBot:
+    def createBot(self, config_file: str) -> TwitterBot:
         pass
 
     @abstractmethod
@@ -78,12 +78,12 @@ class Application(ABC):
 class NewFollowerApplication(Application):
 
     def __init__(self, builder: ApplicationBuilder):
-        self.bot = self.__createBot(builder.config_file)
+        self.bot = self.createBot(builder.config_file)
         self.file_reader = UserFileReader(builder.file_reader)
         self.notification = builder.notification
         self.database = builder.database
 
-    def __createBot(self, config_file: str) -> NewFollowerTwitterBot:
+    def createBot(self, config_file: str) -> NewFollowerTwitterBot:
         config_file_reader = ConfigFileReader(config_file)
         config_file_reader.read()
 
