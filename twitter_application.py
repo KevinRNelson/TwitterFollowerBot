@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from twitter_bot import TwitterBotBuilder
+from twitter_bot import TwitterBot, TwitterBotBuilder
 from file_reader import UserFileReader
 from change_in_followers import ChangeInFollowers
 from message import DefaultMessage
