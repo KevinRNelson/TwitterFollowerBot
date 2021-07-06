@@ -24,7 +24,7 @@ class TimedNotification(Notification):
         start_message = f"start time: {self.start_time}\n"
 
         self.end_time = datetime.now().strftime('%x %X')
-        end_message   = f"end time: {self.end_time}\n"
+        end_message   = f"end time:   {self.end_time}\n"
 
         message = start_message + end_message + "\n" + message
         self.notification.notify(message)
