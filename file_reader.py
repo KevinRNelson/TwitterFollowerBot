@@ -52,5 +52,7 @@ class ConfigFileReader(FileReader):
 
                 self.__auth_keys[key] = val
 
-        # convert the value to a true boolean
-        self.__auth_keys['WAIT_ON_RATE_LIMIT'] = self.__auth_keys['WAIT_ON_RATE_LIMIT'] == 'True'
+        self.__auth_keys['WAIT_ON_RATE_LIMIT'] = self.__convertStringToBoolean(self.__auth_keys['WAIT_ON_RATE_LIMIT'])
+
+    def __convertStringToBoolean(self, boolean: bool) -> bool:
+        return boolean in ['true', 'True', 'TRUE']
