@@ -39,7 +39,7 @@ class NewFollowerApplicationBuilder(ApplicationBuilder):
         self.database = None
         self.file_reader = None
 
-    def configfile(self):
+    def configFile(self):
         self.config_file = config_file
         return self
 
