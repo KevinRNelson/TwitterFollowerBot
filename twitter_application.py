@@ -33,6 +33,7 @@ class ApplicationBuilder(ABC):
     def build(self):
         pass
 
+
 class NewFollowerApplicationBuilder(ApplicationBuilder):
 
     def __init__(self):
@@ -74,6 +75,7 @@ class Application(ABC):
     @abstractmethod
     def run(self):
         pass
+
 
 class NewFollowerApplication(Application):
 
