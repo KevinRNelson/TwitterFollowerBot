@@ -17,13 +17,13 @@ from datetime import datetime
 class TimedNotification(Notification):
 
     def __init__(self, notification: Notification):
-        self.start_time = datetime.now()
+        self.start_time = datetime.now().strftime('%x %X')
         self.notification = notification
 
     def notify(self, message: str) -> None:
         start_message = f"start time: {self.start_time}\n"
 
-        self.end_time = datetime.now()
+        self.end_time = datetime.now().strftime('%x %X')
         end_message   = f"end time: {self.end_time}\n"
 
         message = start_message + end_message + "\n" + message
