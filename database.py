@@ -1,6 +1,21 @@
 from abc import ABC, abstractmethod
 import os
 
+class DatabaseFactory():
+
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def createDatabase(filename: str):
+        if DatabaseFactory.__isPickleDatabase(filename):
+            return PickleDatabase(filename)
+
+    @staticmethod
+    def __isPickleDatabase(filename: str) -> bool:
+        return '.pkl' in filename
+
+
 class Database(ABC):
 
     @abstractmethod
