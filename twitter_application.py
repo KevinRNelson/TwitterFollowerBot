@@ -99,12 +99,13 @@ class NewFollowerApplication(Application):
             .build()
 
     def setUp(self):
-        self.database.read()
-
         self.file_reader.read()
         accounts = self.file_reader.getUsers()
-        self.bot.setUp(accounts)
 
+        self.database.read()
+        saved_follower_map = self.database.getFollowerMap()
+
+        self.bot.setUp(accounts, saved_follower_map)
 
     def run(self):
         self.bot.run()
