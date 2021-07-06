@@ -16,7 +16,7 @@ class Message():
         pass
 
 
-class DefaultMessage(Message):
+class NewFollowerDefaultMessage(Message):
 
     def __init__(self,
         recentlyFollowedAccounts: dict,
