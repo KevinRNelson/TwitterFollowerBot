@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import os
 
-class Message(ABC):
+class Message():
 
     def __init__(self,
         recentlyFollowedAccounts: dict,
@@ -12,8 +12,7 @@ class Message(ABC):
         self.unfollowed = recentlyUnfollowedAccounts
         self.message = ""
 
-    @abstractmethod
-    def format(self):
+    def __format(self):
         pass
 
 
@@ -25,21 +24,23 @@ class DefaultMessage(Message):
 
         super().__init__(recentlyFollowedAccounts, recentlyUnfollowedAccounts)
 
-    def getMessage(self) -> str:
-        return self.message
+        self.__format()
 
-    def format(self):
+    def __format(self):
         for account in self.accounts:
             if (self.__account_has_activity(account)):
                 self.message += account + '\n'
-                
+
                 for followed_account in self.followed[account]:
                     self.message += "+" + followed_account + "\n"
 
                 for unfollowed_account in self.unfollowed[account]:
                     self.message += "-" + unfollowed_account + "\n"
 
-                    self.message += "\n"
+                self.message += "\n"
 
     def __account_has_activity(self, account: str) -> bool:
         return len(self.followed[account]) > 0 or len(self.unfollowed[account]) > 0
+
+    def getMessage(self) -> str:
+        return self.message
