@@ -5,8 +5,8 @@ from file_reader import UserFileReader
 from change_in_followers import ChangeInFollowers
 from message import DefaultMessage
 from notification import Notification
-from database import Databas
-e
+from database import Database
+
 class ApplicationBuilder(ABC):
 
     @abstractmethod
