@@ -111,9 +111,8 @@ class NewFollowerApplication(Application):
         self.bot.run()
 
         followerMap = self.bot.getFollowerMap()
-        self.database.write(followerMap)
 
-        change_in_followers = ChangeInFollowers(self.database, followerMap)
+        change_in_followers = ChangeInFollowers(self.database.getFollowerMap(), followerMap)
 
         message = NewFollowerDefaultMessage(                                   \
             change_in_followers.getFollowedAccounts(),                         \
