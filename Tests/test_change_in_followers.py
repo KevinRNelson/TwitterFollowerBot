@@ -13,13 +13,13 @@ class TestChangeInFollowersMethods(unittest.TestCase):
         self.database.write({'keronels': ['lukaszkaiser']})
         self.database.read()
 
-        self.changeInFollowers = ChangeInFollowers(self.database, {'keronels': ['jabgarya']})
+        self.changeInFollowers = ChangeInFollowers(self.database.getFollowerMap(), {'keronels': ['jabgarya']})
 
     def testGetRecentlyFollowedAccounts(self):
-        self.assertEquals({'keronels': ['jabgarya']}, self.changeInFollowers.getFollowedAccounts())
+        self.assertEqual({'keronels': ['jabgarya']}, self.changeInFollowers.getFollowedAccounts())
 
     def testGetRecentlyUnfollowedAccounts(self):
-        self.assertEquals({'keronels': ['lukaszkaiser']}, self.changeInFollowers.getUnfollowedAccounts())
+        self.assertEqual({'keronels': ['lukaszkaiser']}, self.changeInFollowers.getUnfollowedAccounts())
 
 if __name__ == '__main__':
     unittest.main()
