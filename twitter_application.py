@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 from twitter_bot import TwitterBotBuilder
+from file_reader import UserFileReader
 from change_in_followers import ChangeInFollowers
 from message import DefaultMessage
 
@@ -11,11 +12,11 @@ class ApplicationBuilder(ABC):
         pass
 
     @abstractmethod
-    def config_file(self):
+    def configFile(self):
         pass
 
     @abstractmethod
-    def twitterBot(self, bot):
+    def userFile(self, user_file):
         pass
 
     @abstractmethod
@@ -24,10 +25,6 @@ class ApplicationBuilder(ABC):
 
     @abstractmethod
     def databaseObject(self, database):
-        pass
-
-    @abstractmethod
-    def fileReaderObject(self, file_reader):
         pass
 
     @abstractmethod
@@ -38,17 +35,16 @@ class NewFollowerApplicationBuilder(ApplicationBuilder):
 
     def __init__(self):
         self.config_file = None
-        self.bot = None
         self.notification = None
         self.database = None
         self.file_reader = None
 
-    def config_file(self):
+    def configfile(self):
         self.config_file = config_file
         return self
 
-    def twitterBot(self, bot):
-        self.bot = bot
+    def userFile(self, user_file):
+        self.user_file = user_file
         return self
 
     def notificationObject(self, notification):
@@ -57,10 +53,6 @@ class NewFollowerApplicationBuilder(ApplicationBuilder):
 
     def databaseObject(self, database):
         self.database = database
-        return self
-
-    def fileReaderObject(self, file_reader):
-        self.file_reader = file_reader
         return self
 
     def build(self):
@@ -85,9 +77,9 @@ class NewFollowerApplication(Application):
 
     def __init__(self, builder: ApplicationBuilder):
         self.bot = self.__createBot(builder.config_file)
+        self.file_reader = UserFileReader(builder.file_reader)
         self.notification = builder.notification
         self.database = builder.database
-        self.file_reader = builder.file_reader
 
     def __createBot(self, config_file: str) -> NewFollowerTwitterBot:
         config_file_reader = ConfigFileReader(config_file)
