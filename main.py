@@ -13,7 +13,7 @@ CONFIG_FILE = 'config.txt'
 
 if __name__ == '__main__':
     application = NewFollowerApplicationBuilder()                              \
-        .config_file(CONFIG_FILE)                                              \
+        .configFile(CONFIG_FILE)                                              \
         .userFile(USER_FILE)                                                   \
         .notificationObject(TimedNotification(Print(EMAIL)))                   \
         .databaseObject(PickleDatabase(DATABASE))                              \
