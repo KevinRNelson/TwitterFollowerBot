@@ -1,14 +1,14 @@
 import sys
 sys.path.insert(0,'..')
 
-from database import PickleDatabase
+from database import DatabaseFactory
 import unittest
 
 EMPTY = 0
 class TestDatabaseMethods(unittest.TestCase):
 
     def setUp(self):
-        self.database = PickleDatabase('test.pkl')
+        self.database = DatabaseFactory.createDatabase('test.pkl')
         self.database.write({'keronels': ['lukaszkaiser']})
         self.database.read()
 
