@@ -4,7 +4,9 @@ from twitter_bot import TwitterBot, NewFollowerTwitterBot, TwitterBotBuilder, Ne
 from file_reader import UserFileReader
 from change_in_followers import ChangeInFollowers
 from message import DefaultMessage
-
+from notification import Notification
+from database import Databas
+e
 class ApplicationBuilder(ABC):
 
     @abstractmethod
@@ -12,19 +14,19 @@ class ApplicationBuilder(ABC):
         pass
 
     @abstractmethod
-    def configFile(self):
+    def configFile(self, config_file: str):
         pass
 
     @abstractmethod
-    def userFile(self, user_file):
+    def userFile(self, user_file: str):
         pass
 
     @abstractmethod
-    def notificationObject(self, notification):
+    def notificationObject(self, notification: Notification):
         pass
 
     @abstractmethod
-    def databaseObject(self, database):
+    def databaseObject(self, database: Database):
         pass
 
     @abstractmethod
@@ -39,19 +41,19 @@ class NewFollowerApplicationBuilder(ApplicationBuilder):
         self.database = None
         self.file_reader = None
 
-    def configFile(self):
+    def configFile(self, config_file: str):
         self.config_file = config_file
         return self
 
-    def userFile(self, user_file):
+    def userFile(self, user_file: str):
         self.user_file = user_file
         return self
 
-    def notificationObject(self, notification):
+    def notificationObject(self, notification: Notification):
         self.notification = notification
         return self
 
-    def databaseObject(self, database):
+    def databaseObject(self, database: Database):
         self.database = database
         return self
 
