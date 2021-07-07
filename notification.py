@@ -21,7 +21,7 @@ class CompositeNotification(Notification):
     def add(self, notification: Notification):
         self.notifications.append(notification)
 
-    def notifiy(self, message: str) -> None:
+    def notify(self, message: str) -> None:
         for notification in self.notifications:
             notification.notify(message)
 
