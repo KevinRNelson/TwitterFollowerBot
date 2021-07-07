@@ -1,3 +1,3 @@
 # TwitterFollowerBot
-![NewFollowersMainUmlDiagram](https://user-images.githubusercontent.com/44622840/124833914-b9e43900-df33-11eb-97d9-05de1cf3b297.png)
+![NewFollowersMainUmlDiagram](https://user-images.githubusercontent.com/44622840/124834250-4989e780-df34-11eb-946a-cdf81028c8d6.png)
 ![NewFollowersUmlDiagram](https://user-images.githubusercontent.com/44622840/124678819-2bf74800-de78-11eb-9bde-8bbb8e11a458.png)
