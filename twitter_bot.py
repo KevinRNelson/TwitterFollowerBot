@@ -79,13 +79,13 @@ class NewFollowerTwitterBot(TwitterBot):
 
     def run(self):
         try:
-            self.getCurrentFollowers()
+            self.__getCurrentFollowers()
         except Exception as e:
             raise e
 
-    def getCurrentFollowers(self):
+    def __getCurrentFollowers(self):
         for account in self.__accounts:
             self.__follower_map[account] = []
-            
+
             for follower in tweepy.Cursor(self.api.friends, account, count=self.__count).items():
                 self.__follower_map[account].append(follower.screen_name)
