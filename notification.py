@@ -21,7 +21,7 @@ class CompositeNotification(Notification):
     def add(self, notification: Notification):
         self.notifications.append(notification)
 
-    def notifiy(self, message: str):
+    def notifiy(self, message: str) -> None:
         for notification in self.notifications:
             notification.notify(message)
 
@@ -48,7 +48,7 @@ class PrintNotification(Notification):
     def __init__(self, out):
         self.out = out
 
-    def notify(self, message: str):
+    def notify(self, message: str) -> None:
         print(message)
 
 
@@ -59,3 +59,12 @@ class EmailNotification(Notification):
 
     def notify(self, message: str) -> None:
         os.system(f'echo "{message}" | mail -s "Twitter Bot - Updates" {self.email}')
+
+
+class TestNotification(Notification):
+
+    def __init__(self):
+        self.notified = False
+
+    def notify(self, message: str) -> None:
+        self.notified = True
