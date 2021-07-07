@@ -13,6 +13,19 @@ class Notification(ABC):
         pass
 
 
+class CompositeNotification(Notification):
+
+    def __init__(self):
+        self.notifications = []
+
+    def add(self, notification: Notification):
+        self.notifications.append(notification)
+
+    def notifiy(self, message: str):
+        for notification in self.notifications:
+            notification.notify(message)
+
+
 from datetime import datetime
 class TimedNotification(Notification):
 
@@ -30,7 +43,7 @@ class TimedNotification(Notification):
         self.notification.notify(message)
 
 
-class Print(Notification):
+class PrintNotification(Notification):
 
     def __init__(self, out):
         self.out = out
@@ -39,7 +52,7 @@ class Print(Notification):
         print(message)
 
 
-class Email(Notification):
+class EmailNotification(Notification):
 
     def __init__(self, email: str):
         self.email = email
