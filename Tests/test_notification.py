@@ -6,9 +6,6 @@ import unittest
 
 class TestNotificationMethods(unittest.TestCase):
 
-    # def setUp(self):
-
-
     def testTestNotification(self):
         notification = TestNotification()
         self.assertEqual(False, notification.notified)
@@ -39,6 +36,7 @@ class TestNotificationMethods(unittest.TestCase):
 
         self.assertEqual(True, notification1.notified)
         self.assertEqual(True, notification2.notified)
+
 
 if __name__ == '__main__':
     unittest.main()
